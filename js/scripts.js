@@ -1,9 +1,9 @@
 /* ----- constants -----*/
 const COLORS = {
-    null: 'gray',
-    '1': 'green',
-    '-1': 'blue',
-    default: 'black'
+    null: '#ffffff',
+    '1': '#22bb27',
+    '-1': '#6303fd',
+    default: '#000000'
 };
 
 const PLAYERS = {
@@ -34,8 +34,47 @@ const msgEl = document.querySelector('#msg');
 const replayEl = document.querySelector('#replay');
 
 /* ----- event listeners -----*/
-boardEl.addEventListener('click', function(event) {
+boardEl.addEventListener('click', handleSquareSelect);
+replayEl.addEventListener('click', replay);
 
+/* ----- functions -----*/
+init();
+
+function init() {
+    board = [null, null, null, null, null, null, null, null, null];
+    // or can also be done as -> board = new Array(9).fill(null);
+    turn = 1;
+    winner = null;
+    render();
+}
+
+function render() {
+    // loop through board array / buttons and map color based on owner
+    buttonEls.forEach((btn, idx) => {
+        btn.dataset.idx = idx;
+        btn.style.backgroundColor = COLORS[board[idx]];
+    });
+
+    // render message / status
+    if(winner === null) {
+        msgEl.innerText = `Player ${PLAYERS[turn]}`;
+        msgEl.style.color = COLORS[turn];
+        msgEl.style.textTransform = 'uppercase';
+    } else if(winner === 'T') {
+        msgEl.innerText = `It's a tie!`;
+        msgEl.style.color = COLORS['default'];
+        msgEl.style.textTransform = 'initial';
+    } else {
+        msgEl.innerText = `Congrats, Player ${PLAYERS[winner]}! You won!`;
+        msgEl.style.color = COLORS[winner];
+        msgEl.style.textTransform = 'uppercase';
+    }
+
+    // hide or show replay button based on if there is a winner or not
+    replayEl.style.visibility = winner !== null || winner === 'T' ? 'visible' : 'hidden';
+}
+
+function handleSquareSelect(event) {
     const btn = event.target;
     const btnIdx = btn.dataset.idx;
 
@@ -78,45 +117,9 @@ boardEl.addEventListener('click', function(event) {
 
     // now re-render and update dom
     render();
-});
-
-replayEl.addEventListener('click', function() {
-    init();
-    render();
-});
-
-/* ----- functions -----*/
-init();
-
-function init() {
-    board = [null, null, null, null, null, null, null, null, null];
-    turn = 1;
-    winner = null;
-    render();
 }
 
-function render() {
-    // loop through board array / buttons and map color based on owner
-    buttonEls.forEach((btn, idx) => {
-        btn.dataset.idx = idx;
-        btn.style.backgroundColor = COLORS[board[idx]];
-    });
-
-    // render message / status
-    if(winner === null) {
-        msgEl.innerText = `Player ${PLAYERS[turn]}`;
-        msgEl.style.color = COLORS[turn];
-        msgEl.style.textTransform = 'uppercase';
-    } else if(winner === 'T') {
-        msgEl.innerText = `It's a tie!`;
-        msgEl.style.color = COLORS['default'];
-        msgEl.style.textTransform = 'initial';
-    } else {
-        msgEl.innerText = `Congrats, Player ${PLAYERS[winner]}! You won!`;
-        msgEl.style.color = COLORS[winner];
-        msgEl.style.textTransform = 'uppercase';
-    }
-
-    // hide or show replay button based on if there is a winner or not
-    replayEl.style.visibility = winner !== null || winner === 'T' ? 'visible' : 'hidden';
+function replay() {
+    init();
+    render();
 }
