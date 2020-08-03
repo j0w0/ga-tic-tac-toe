@@ -1,26 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Recursive&display=swap');
+
+:root {
+    --board-border: 5px solid rgba(255, 255, 255, 0.1);
+}
+
 * {
     box-sizing: border-box;
 }
 
+html {
+    position: relative;
+    height: 100%;
+    background-image: linear-gradient(#010207, #2a094c);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
 body {
+    display: flex;
     text-align: center;
+    font-family: 'Recursive', Helvetica, sans-serif;
+    /* background-image: url('https://www.transparenttextures.com/patterns/inspiration-geometry.png'); */
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+    background-position: center;
+    color: white;
+    height: 100%;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: auto;
+}
+
+#game {
+    width: 100%;
+    padding-top: 3%;
+}
+
+header {
+    margin-bottom: 35px;
 }
 
 #board {
     display: grid;
     grid-template-columns: repeat(3, 33.3333%);
     grid-template-rows: repeat(3, 33.3333%);
-    margin: 0 auto;
-    max-width: 500px;
+    margin: auto;
     margin-bottom: 25px;
+    max-width: 500px;
+    min-height: 500px;
+    padding: 3%;
+    background: rgb(52 45 82 / 75%);
+    border-radius: 5px;
+    grid-gap: 5px;
 }
 
 .square {
-    border: 1px solid #00000063;
-    padding-top: 100%;
+    border: 0;
     border-radius: 0;
+    font-size: 100px;
 }
 
 .square:focus {
     outline: 0;
+}
+
+.square:nth-of-type(1),
+.square:nth-of-type(2),
+.square:nth-of-type(3) {
+    border-bottom: var(--board-border);
+}
+
+.square:nth-of-type(7),
+.square:nth-of-type(8),
+.square:nth-of-type(9) {
+    border-top: var(--board-border);
+}
+
+.square:nth-of-type(1),
+.square:nth-of-type(4),
+.square:nth-of-type(7) {
+    border-right: var(--board-border);
+}
+
+.square:nth-of-type(3),
+.square:nth-of-type(6),
+.square:nth-of-type(9) {
+    border-left: var(--board-border);
 }

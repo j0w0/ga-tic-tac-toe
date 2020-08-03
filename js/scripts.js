@@ -1,14 +1,13 @@
 /* ----- constants -----*/
 const COLORS = {
-    null: '#ffffff',
-    '1': '#22bb27',
-    '-1': '#6303fd',
-    default: '#000000'
+    null: 'transparent',
+    '1': 'rgb(255 0 95 / 65%)',
+    '-1': 'rgb(99 3 253 / 65%)'
 };
 
 const PLAYERS = {
-    '1': 'X',
-    '-1': 'O'
+    '1': '🤖',
+    '-1': '👶🏼'
 };
 
 const WINNING_COMBINATIONS = [
@@ -32,6 +31,7 @@ const boardEl = document.querySelector('#board');
 const buttonEls = document.querySelectorAll('.square');
 const msgEl = document.querySelector('#msg');
 const replayEl = document.querySelector('#replay');
+const titleEl = document.querySelector('#title');
 
 /* ----- event listeners -----*/
 boardEl.addEventListener('click', handleSquareSelect);
@@ -45,6 +45,8 @@ function init() {
     // or can also be done as -> board = new Array(9).fill(null);
     turn = 1;
     winner = null;
+
+    
     render();
 }
 
@@ -53,22 +55,32 @@ function render() {
     buttonEls.forEach((btn, idx) => {
         btn.dataset.idx = idx;
         btn.style.backgroundColor = COLORS[board[idx]];
+
+        if(board[idx] !== null) {
+            btn.innerText = PLAYERS[board[idx]];
+        } else {
+            btn.innerText = '';
+        }
     });
 
     // render message / status
-    if(winner === null) {
-        msgEl.innerText = `Player ${PLAYERS[turn]}`;
+    if(!board.includes(1)) {
+        msgEl.innerText = `${PLAYERS[1]}s or ${PLAYERS[-1]}s?`;
+    } else if(winner === null) {
+        msgEl.innerText = `${PLAYERS[turn]}'s Turn`;
         msgEl.style.color = COLORS[turn];
-        msgEl.style.textTransform = 'uppercase';
+        //msgEl.style.textTransform = 'uppercase';
     } else if(winner === 'T') {
-        msgEl.innerText = `It's a tie!`;
-        msgEl.style.color = COLORS['default'];
-        msgEl.style.textTransform = 'initial';
+        msgEl.innerText = `Yikes! Robot-baby hybrids!`;
+        msgEl.style.color = 'inherit';
+        //msgEl.style.textTransform = 'initial';
     } else {
-        msgEl.innerText = `Congrats, Player ${PLAYERS[winner]}! You won!`;
+        msgEl.innerText = `${PLAYERS[winner]} have defeated and conquered!`;
         msgEl.style.color = COLORS[winner];
-        msgEl.style.textTransform = 'uppercase';
+        //msgEl.style.textTransform = 'uppercase';
     }
+
+    console.log(board);
 
     // hide or show replay button based on if there is a winner or not
     replayEl.style.visibility = winner !== null || winner === 'T' ? 'visible' : 'hidden';
