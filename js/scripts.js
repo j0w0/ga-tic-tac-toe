@@ -35,7 +35,7 @@ const titleEl = document.querySelector('#title');
 
 /* ----- event listeners -----*/
 boardEl.addEventListener('click', handleSquareSelect);
-replayEl.addEventListener('click', replay);
+replayEl.addEventListener('click', init);
 
 /* ----- functions -----*/
 init();
@@ -124,8 +124,4 @@ function handleSquareSelect(event) {
 
     // now re-render and update dom
     render();
-}
-
-function replay() {
-    init();
 }
