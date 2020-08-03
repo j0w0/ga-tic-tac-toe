@@ -128,5 +128,4 @@ function handleSquareSelect(event) {
 
 function replay() {
     init();
-    render();
 }
