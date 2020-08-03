@@ -1,6 +1,6 @@
 /* ----- constants -----*/
 const COLORS = {
-    null: 'transparent',
+    null: 'rgb(255 255 255 / 15%)',
     '1': 'rgb(255 0 95 / 65%)',
     '-1': 'rgb(99 3 253 / 65%)'
 };
@@ -46,7 +46,7 @@ function init() {
     turn = 1;
     winner = null;
 
-    
+    titleEl.innerText = `Who will take over the world?`;
     render();
 }
 
@@ -65,22 +65,20 @@ function render() {
 
     // render message / status
     if(!board.includes(1)) {
-        msgEl.innerText = `${PLAYERS[1]}s or ${PLAYERS[-1]}s?`;
+        msgEl.innerText = `Robots or Babies?`;
     } else if(winner === null) {
-        msgEl.innerText = `${PLAYERS[turn]}'s Turn`;
-        msgEl.style.color = COLORS[turn];
+        msgEl.innerText = `${PLAYERS[turn]}`;
+        //msgEl.style.color = COLORS[turn];
         //msgEl.style.textTransform = 'uppercase';
     } else if(winner === 'T') {
         msgEl.innerText = `Yikes! Robot-baby hybrids!`;
-        msgEl.style.color = 'inherit';
+        //msgEl.style.color = 'inherit';
         //msgEl.style.textTransform = 'initial';
     } else {
-        msgEl.innerText = `${PLAYERS[winner]} have defeated and conquered!`;
-        msgEl.style.color = COLORS[winner];
+        msgEl.innerText = `Bow down! ${PLAYERS[winner]}s have defeated and conquered!`;
+        //msgEl.style.color = COLORS[winner];
         //msgEl.style.textTransform = 'uppercase';
     }
-
-    console.log(board);
 
     // hide or show replay button based on if there is a winner or not
     replayEl.style.visibility = winner !== null || winner === 'T' ? 'visible' : 'hidden';
@@ -104,6 +102,8 @@ function handleSquareSelect(event) {
     // flip turn to other user
     turn *= -1;
 
+    let winningCombo = null;
+
     // loop through winning combinations to determine if winner
     WINNING_COMBINATIONS.forEach((combo) => {
 
@@ -118,6 +118,7 @@ function handleSquareSelect(event) {
         if(Math.abs(comboSum) === 3) {
             let firstComboSquareIdx = combo[0];
             winner = board[firstComboSquareIdx];
+            winningCombo = combo;
             return;
         }
     });

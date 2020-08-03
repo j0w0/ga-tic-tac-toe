@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Recursive&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Trade+Winds&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400&display=swap');
 
 :root {
     --board-border: 5px solid rgba(255, 255, 255, 0.1);
@@ -9,30 +10,45 @@
 }
 
 html {
-    position: relative;
     height: 100%;
-    background-image: linear-gradient(#010207, #2a094c);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
 }
 
 body {
-    display: flex;
+    position: relative;
+    background-image: linear-gradient(#160323, #370961);
+    background-attachment: fixed;
     text-align: center;
-    font-family: 'Recursive', Helvetica, sans-serif;
-    /* background-image: url('https://www.transparenttextures.com/patterns/inspiration-geometry.png'); */
-    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-    background-position: center;
+    font-family: 'Inconsolata', Helvetica, sans-serif;
     color: white;
     height: 100%;
-    justify-content: center;
-    /* align-items: center; */
+}
+
+h1 {
+    font-family: 'Trade Winds', Helvetica, sans-serif;
+    color: rgb(255 225 0);
 }
 
 button {
     padding: 10px 20px;
     border-radius: 20px;
     border: 0;
+    background: #ffe200;
+}
+
+#game {
+    padding: 5% 0 35px;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+    background-position: center;
+    z-index: -1;
 }
 
 .container {
@@ -43,27 +59,23 @@ button {
     margin: auto;
 }
 
-#game {
-    width: 100%;
-    padding-top: 3%;
-}
-
 header {
     margin-bottom: 35px;
 }
 
+#msg {
+    font-size: 18px;
+}
+
 #board {
     display: grid;
-    grid-template-columns: repeat(3, 33.3333%);
-    grid-template-rows: repeat(3, 33.3333%);
+    grid-template-columns: repeat(3, 32%);
+    grid-template-rows: repeat(3, 32%);
     margin: auto;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
     max-width: 500px;
     min-height: 500px;
-    padding: 3%;
-    background: rgb(52 45 82 / 75%);
-    border-radius: 5px;
-    grid-gap: 5px;
+    grid-gap: 2%;
 }
 
 .square {
