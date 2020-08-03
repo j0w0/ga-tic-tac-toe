@@ -68,16 +68,10 @@ function render() {
         msgEl.innerText = `Robots or Babies?`;
     } else if(winner === null) {
         msgEl.innerText = `${PLAYERS[turn]}`;
-        //msgEl.style.color = COLORS[turn];
-        //msgEl.style.textTransform = 'uppercase';
     } else if(winner === 'T') {
         msgEl.innerText = `Yikes! Robot-baby hybrids!`;
-        //msgEl.style.color = 'inherit';
-        //msgEl.style.textTransform = 'initial';
     } else {
         msgEl.innerText = `Bow down! ${PLAYERS[winner]}s have defeated and conquered!`;
-        //msgEl.style.color = COLORS[winner];
-        //msgEl.style.textTransform = 'uppercase';
     }
 
     // hide or show replay button based on if there is a winner or not
