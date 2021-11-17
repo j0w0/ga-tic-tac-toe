@@ -1,30 +1,24 @@
 /* ----- constants -----*/
-const COLORS = {
-    null: 'rgb(255 255 255 / 15%)',
-    '1': 'rgb(255 0 95 / 65%)',
-    '-1': 'rgb(99 3 253 / 65%)'
-};
-
 const PLAYERS = {
-    '1': '🤖',
-    '-1': '👶🏼'
+    '1': {
+        name: 'Robots',
+        character: '🤖',
+        color: 'rgb(255 0 95 / 65%)'
+    },
+    '-1': {
+        name: 'Babies',
+        character: '👶🏼',
+        color: 'rgb(99 3 253 / 65%)'
+    },
+    null: {
+        name: null,
+        character: null,
+        color: 'rgb(255 255 255 / 15%)'
+    },
 };
-
-const WINNING_COMBINATIONS = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-];
 
 /* ----- app's state (variables) -----*/
-let board;
-let turn;
-let winner;
+let board, turn, winner;
 
 /* ----- cached element references -----*/
 const boardEl = document.querySelector('#board');
@@ -41,37 +35,30 @@ replayEl.addEventListener('click', init);
 init();
 
 function init() {
-    board = [null, null, null, null, null, null, null, null, null];
-    // or can also be done as -> board = new Array(9).fill(null);
+    board = new Array(9).fill(null);
     turn = 1;
-    winner = null;
-
+    winner = getWinner();
     titleEl.innerText = `Who will take over the world?`;
     render();
 }
 
 function render() {
-    // loop through board array / buttons and map color based on owner
+    // loop through buttons and update appearance
     buttonEls.forEach((btn, idx) => {
         btn.dataset.idx = idx;
-        btn.style.backgroundColor = COLORS[board[idx]];
-
-        if(board[idx] !== null) {
-            btn.innerText = PLAYERS[board[idx]];
-        } else {
-            btn.innerText = '';
-        }
+        btn.style.backgroundColor = PLAYERS[board[idx]].color;
+        btn.innerText = board[idx] !== null ? PLAYERS[board[idx]].character : '';
     });
 
     // render message / status
     if(!board.includes(1)) {
-        msgEl.innerText = `Robots or Babies?`;
+        msgEl.innerText = `${PLAYERS[1].name} or ${PLAYERS[-1].name}?`;
     } else if(winner === null) {
-        msgEl.innerText = `${PLAYERS[turn]}`;
+        msgEl.innerText = `${PLAYERS[turn].character}`;
     } else if(winner === 'T') {
         msgEl.innerText = `Yikes! Robot-baby hybrids!`;
     } else {
-        msgEl.innerText = `Bow down! ${PLAYERS[winner]}s have defeated and conquered!`;
+        msgEl.innerText = `Bow down! ${PLAYERS[winner].name} have defeated and conquered!`;
     }
 
     // hide or show replay button based on if there is a winner or not
@@ -79,49 +66,42 @@ function render() {
 }
 
 function handleSquareSelect(event) {
-    const btn = event.target;
-    const btnIdx = btn.dataset.idx;
+    const btnIdx = event.target.dataset.idx;
 
-    currentSquareValue = board[btnIdx];
+    // return if square is already taken or if there's a winner
+    if(board[btnIdx] !== null || winner !== null) return;
 
-    // return if square is already taken
-    if(currentSquareValue !== null) return;
-
-    // return if there is already a winner
-    if(winner !== null) return;
-
-    // update board array with player who just took it
+    // update state
     board[btnIdx] = turn;
-
-    // flip turn to other user
     turn *= -1;
+    winner = getWinner();
 
-    let winningCombo = null;
-
-    // loop through winning combinations to determine if winner
-    WINNING_COMBINATIONS.forEach((combo) => {
-
-        let comboSum = 0;
-
-        // add up board array values for each combo
-        combo.forEach((num) => {
-            comboSum += board[num];
-        });
-
-        // if 3 in a row, set winner to owner of first square in combo
-        if(Math.abs(comboSum) === 3) {
-            let firstComboSquareIdx = combo[0];
-            winner = board[firstComboSquareIdx];
-            winningCombo = combo;
-            return;
-        }
-    });
-
-    // if no winner and no more squares available, set a tie
-    if(winner === null && !board.includes(null)) {
-        winner = 'T';
-    }
-
-    // now re-render and update dom
+    // re-render and update dom
     render();
+}
+
+function getWinner() {
+    const WINNING_COMBINATIONS = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+    // loop through winning combinations
+    for(i = 0; i < WINNING_COMBINATIONS.length; i++) {
+        if(Math.abs(
+            board[WINNING_COMBINATIONS[i][0]] +
+            board[WINNING_COMBINATIONS[i][1]] +
+            board[WINNING_COMBINATIONS[i][2]]
+        ) === 3) {
+            return board[WINNING_COMBINATIONS[i][0]];
+        }
+    };
+    if(!board.includes(null)) return 'T';
+    return null;
 }
